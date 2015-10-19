@@ -6,7 +6,7 @@ This README would normally document whatever steps are necessary to get your app
 
 * Proof of Tableau Web Connector API using College Scorecard Data located at data.gov
 * 0.1
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+
 # NOTE: CURRENTLY THIS CODE DOESN"T WORK FOR TABLEAU DASHBOARD #
 ### How do I get set up? ###
 
