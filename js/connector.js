@@ -25,7 +25,7 @@
           var hasMoreData = false;
           var api_key = "&api_key=xD8bb27zxTxfMuQ5edQhz27zNTkzOc6pqcnYJwCD";
           var state = tableau.connectionData;
-          var url = "http://api.data.gov/ed/collegescorecard/v1/schools.json?school.state=";
+          var url = "https://api.data.gov/ed/collegescorecard/v1/schools?school.state=";
           url = url + state + api_key;
           microAjax( url, function (res) {
             res = JSON.parse(res);
