@@ -26,8 +26,34 @@
           var api_key = "&api_key=xD8bb27zxTxfMuQ5edQhz27zNTkzOc6pqcnYJwCD";
           var state = tableau.connectionData;
           var url = "https://api.data.gov/ed/collegescorecard/v1/schools?school.state=";
-          url = url + state + api_key;
-          microAjax( url, function (res) {
+          var connectionUri = url + state + api_key;
+
+          var xhr = $.ajax({
+          url: connectionUri,
+          success: function (res) {
+              if (res.results) {
+                  var schools = res["results"];
+                  var ii;
+                  for (ii = 0; ii < schools.length; ++ii) {
+                      var entry = {'Name': schools[ii]["school"]["name"],
+                                   'City': schools[ii]["school"]["city"],
+                                   'Ownership': schools[ii]["school"]["ownership"]};
+                      dataToReturn.push(entry);
+                  }
+                  tableau.dataCallback(dataToReturn, lastRecordToken, false);
+                }
+                else {
+                  tableau.abortWithError("No results found for ticker symbol: " + state);
+                }
+          },
+          error: function (xhr, ajaxOptions, thrownError) {
+              // If the connection fails, log the error and return an empty set.
+              tableau.log("Connection error: " + xhr.responseText + "\n" + thrownError);
+              tableau.abortWithError("Error while trying to connecto to the Yahoo stock data source.");
+          }
+        });
+          /*
+          microAjax(url, function (res) {
             res = JSON.parse(res);
 
             if (res.results) {
@@ -45,7 +71,7 @@
               tableau.abortWithError("No results found for: " + state);
             }
           });
-          tableau.dataCallback(dataToReturn, lastRecordToken.toString(), hasMoreData);
+          tableau.dataCallback(dataToReturn, lastRecordToken.toString(), hasMoreData);*/
       }
       /*To be used when there is no user input
       myConnector.init = function() {
