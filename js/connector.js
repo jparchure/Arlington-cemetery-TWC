@@ -16,8 +16,8 @@
       var myConnector = tableau.makeConnector();
 
       myConnector.getColumnHeaders = function() {
-          var fieldNames = ['Name', 'City', 'Ownership', 'Predominant degree awarded', 'Region'];
-          var fieldTypes = ['string', 'string', 'string','string','string'];
+          var fieldNames = ['ISS_ID', 'LOCATIONID', 'SECTION', 'GRAVE', 'PRIMARYFIRSTNAME','PRIMARYLASTNAME','BRANCHOFSERVICE'];
+          var fieldTypes = ['number', 'string', 'string','string','string','string','string'];
           tableau.headersCallback(fieldNames, fieldTypes);
       }
 
@@ -30,20 +30,31 @@
           //var maxRecords = 1;
           var dataToReturn = [];
           var hasMoreData = true;
-          var api_key = "&api_key=xD8bb27zxTxfMuQ5edQhz27zNTkzOc6pqcnYJwCD";
+          //var api_key = "&api_key=xD8bb27zxTxfMuQ5edQhz27zNTkzOc6pqcnYJwCD";
           var state = tableau.connectionData;
-          var url = "https://api.data.gov/ed/collegescorecard/v1/schools?school.city=";
-          var connectionUri = url + state + api_key;
-
+          var url = "http://wspublic.iss.army.mil/IssRetrieveServices.svc/search?q=rank=ssgt,birthstate=CA&sortColumn=PrimaryLastName,PrimaryFirstName&sortOrder=asc&limit=50&&start=0&method=IntermentsRender";          
+          var connectionUri = url;//+  api_key;
+          /*var IntermentsRender = function(rest){
+          	console.log(rest);
+          }*/
           var getRecords = function(connectionUri, index){
                 //var alldataloaded = "";
 
-                    
+
                     $.ajax({
-                    url: connectionUri + "&_per_page=50&_page=" + index,
+                    url: connectionUri,
+                    jsonpCallback: 'IntermentsRender',
+                    jsonp: 'method',
+                    crossDomain: true,
+                    contentType: "application/javascript",
+                    dataType: 'jsonp',// + "&_per_page=50&_page=" + index,
                     success: function (res) {
-                        if (res.results) {
-                            console.log(hasMoreData, index);
+                    	console.log(res);
+                        if (res){
+                        	console.log("The resoinse", res);
+                            //tableau.dataCallback(dataToReturn);
+/*
+                            , index.toString(), hasMoreData);
                             var schools = res["results"];
                             maxRecords = res["metadata"]["total"];
                             console.log(maxRecords);
@@ -64,10 +75,11 @@
                           }
                             console.log("Data to return", dataToReturn, index, hasMoreData);
                             tableau.dataCallback(dataToReturn, index.toString(), hasMoreData);
-
+*/
                           }
                           else {
-                            tableau.abortWithError("No results found for ticker symbol: " + state);
+
+                            tableau.abortWithError("No results found for ticker symbol: " + 'state');
                           }
                     },
                     error: function (xhr, ajaxOptions, thrownError) {
@@ -79,6 +91,7 @@
               
           };
           var xhr = getRecords(connectionUri, index);
+
           /*
           microAjax(url, function (res) {
             res = JSON.parse(res);
