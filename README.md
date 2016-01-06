@@ -11,7 +11,7 @@ It's very much a work in progress, but in the current form it gives you the scaf
 #  #
 ### How do I get set up? ###
 
-* Sset up a proxy server to wrap json into jsonp at port 8001 (not included but you can find it <a href="https://github.com/spolyak/node-jsonp-proxy"> here </a>)
+* Set up a proxy server to wrap json into jsonp at port 8001 (not included but you can find it <a href="https://github.com/spolyak/node-jsonp-proxy"> here </a>)
 * Run a local http server inside the connector code folder.
 * Open Tableau -> Connect To -> Web Connector -> localhost:8000
 
