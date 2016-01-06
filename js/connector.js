@@ -1,42 +1,23 @@
- //Hosted at aacc-tableau-web-connector.s3-website-us-east-1.amazonaws.com
-
-
- /*$(document).ready(function() {
-    $("#submitButton").click(function() {
-      var stateName = $('#city').val().trim();
-      if (stateName) {
-        tableau.connectionName = "Scorecard Data for " + stateName;
-        tableau.connectionData = stateName;
-        tableau.submit();
-      //}
-    }//);
-  );*/
 
  (function() {
  	console.log("LEg 1");
       var myConnector = tableau.makeConnector();
       myConnector.init = function() {
-				  console.log("Leg 10");
+      			console.log("LEg 2");
 		          tableau.initCallback();
 		          tableau.submit();
-		          console.log("Leg 11");
+		          console.log("LEg 2");
 		      };
       myConnector.getColumnHeaders = function() {
           var fieldNames = ['ISS_ID', 'LOCATIONID', 'SECTION', 'GRAVE', 'PRIMARYFIRSTNAME','PRIMARYLASTNAME','BRANCHOFSERVICE'];
           var fieldTypes = ['number', 'string', 'string','string','string','string','string'];
-          console.log("LEg 2");
           tableau.headersCallback(fieldNames, fieldTypes);
-          console.log("LEg 3");
       }
 
       myConnector.getTableData = function(lastRecordToken) {
-      	console.log("LEg 4");
+
           var index;
-           /*if(lastRecordToken.length == 0)
-                {index = 0;}
-            else
-                {index = parseInt(lastRecordToken);}*/
-          //var maxRecords = 1;
+
           var dataToReturn = [];
           var hasMoreData = true;
           //var api_key = "&api_key=xD8bb27zxTxfMuQ5edQhz27zNTkzOc6pqcnYJwCD";
@@ -49,7 +30,7 @@
           var getRecords = function(connectionUri, index){
                 //var alldataloaded = "";
 
-                console.log("LEg 5");
+
 
                 	$.ajax({
                     url: "http://localhost:8001/?url=http%3A%2F%2Fwspublic.iss.army.mil%2FIssRetrieveServices.svc%2Fsearch%3Fq%3DPrimaryLastName%3Dsmith%26sortColumn%3DPrimaryLastName%2Cprimaryfirstname%26sortOrder%3Dasc%26limit%3D50%26%26start%3D0%26method%3DIntermentsRender",
@@ -72,7 +53,7 @@
                     		console.log(output);
                     		dataToReturn.push(output);
                     	}
-                    	tableau.dataCallback(dataToReturn);
+                    	tableau.dataCallback(dataToReturn,0,false);
                   },
                     error: function (xhr, ajaxOptions, thrownError) {
                       console.log(xhr, ajaxOptions, thrownError);
@@ -86,19 +67,13 @@
               
           };
 
-          console.log("LEg 6");
+
           var xhr = getRecords(connectionUri, index);
 
 
       }
-      
-      
-      
-      console.log("LEg 8");
       tableau.registerConnector(myConnector);
-      console.log("LEg 9");
 
-      //$(document).ready(myConnector.init);
       
 		
   
